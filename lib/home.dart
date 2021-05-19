@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   void initializeBeacon() async {
     try {
-      final isScaning = await flutterBeacon.initializeAndCheckScanning;
+      final isScaning = await flutterBeacon.initializeScanning;
       print(isScaning);
 
       startBeaconScan();
@@ -63,9 +63,11 @@ class _HomePageState extends State<HomePage> {
       // list can be empty if no matching beacons were found in range
       if (result.beacons.isNotEmpty) {
         final beacon = result.beacons.first;
+        print(beacon.proximity);
+        print(beacon.rssi);
         setState(() {
           this.accuracy = "${beacon.accuracy}";
-          this.proximity = beacon.proximityUUID;
+          this.proximity = beacon.proximity.index.toString();
         });
       }
     });
@@ -76,6 +78,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(proximity),
             Text(accuracy),
